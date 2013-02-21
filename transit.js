@@ -14,13 +14,6 @@ transit.core = (function () {
         .init(config.cgiUrl)
         .addBboxLayer()
         .addRouteLayer()
-        .addNotesLayer()
-        .addGpxLayer()
-        .addStopsLayer()
-        .initControls();
-
-    transit.dataInterface
-        .init(config.cgiUrl);
 
     transit.controls
         .init();
