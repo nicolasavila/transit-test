@@ -1,0 +1,65 @@
+body{
+	padding:0;
+	margin:10px;
+	color:#333;
+	background:#fff;
+	font:12px arial,verdana,sans-serif;
+	text-align:left;
+	}
+#header {
+	font:15px arial,verdana,sans-serif;
+	width:100%;
+	background:lightgrey;
+	margin-bottom:10px;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+#loginForm {
+	width:100%;
+	display:none;
+}
+#userInfo {
+	width:100%;
+	display:none;
+/*
+	display:hidden;
+*/
+}
+
+form{
+	margin:0;
+	padding:0;
+	}
+
+label{
+	width:100px;
+	padding:0 1em;
+	text-align:right;
+	}
+fieldset div{
+	margin-bottom:.5em;
+	padding:0;
+	display:block;
+	}
+fieldset div input,fieldset div textarea{
+	width:150px;
+	border-top:1px solid #555;
+	border-left:1px solid #555;
+	border-bottom:1px solid #ccc;
+	border-right:1px solid #ccc;
+	padding:1px;color:#333;
+	}
+fieldset div select{
+	padding:1px;
+	}
+
+
+input:focus,textarea:focus{
+	background:#efefef;
+	color:#000;}
+fieldset div.fm-req{
+	font-weight:bold;
+	}
+fieldset div.fm-req label:before{
+	content:"* ";}
+

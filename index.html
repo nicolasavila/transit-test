@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <title>Movilidad Integral - Ciudad de Córdoba</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Movilidad Integral - Ciudad de Córdoba">
+  <meta name="author" content="Gastón Avila">
+<!--
+  <link rel="stylesheet" href="js/OpenLayers/theme/default/style.css" type="text/css">
+  <link rel="stylesheet" href="js/OpenLayers/theme/default/google.css" type="text/css">
+-->
+  <link rel="stylesheet" href="css/google.css" type="text/css">
+  <link href="assets/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css" type="text/css">
+  <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+</head>
+<body>
+<!--
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="index.html">Movilidad Integral</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li class="active"><a href="index.html">Buses</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+-->
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span3">
+          <div id="omnibus">
+            <legend>Routes and Trips</legend>
+            <form class="form-inline">
+              <label for="tracksSelect">Tracks</label>
+              <select class="span6" id="tracksSelect"></select>
+            </form>
+            <form class="form-inline">
+              <label for="routesSelect">Routes</label>
+              <select class="span6" id="routesSelect"></select>
+              <button class="btn" id="editRoute" data-toggle="button">Edit</button>
+            </form>
+            <form class="form-inline">
+              <label for="tripsSelect">Trips</label>
+              <select class="span6" id="tripsSelect"></select>
+              <button class="btn" id="editShape">Edit</button>
+              <button class="btn" id="sortStops">Sort</button>
+            </form>
+<!--
+            <p>
+              <button class="btn btn-primary">New</button>
+              <button class="btn" type="button" data-toggle="modal" data-target="#tripEdit">Edit</button>
+              <button class="btn btn-danger">Delete</button>
+            </p>
+-->
+<!--
+            <div id="tripEdit" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Edit trip information</h3>
+              </div>
+              <div class="modal-body">
+                <p><textarea></textarea></p>
+                <p><button class="btn">Test Button</button></p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+-->
+
+            <legend>Stop Information</legend>
+            <div class="control-group">
+              <div class="btn-group">
+                <button class="btn" id="prevStop"><i class="icon-backward"></i></button>
+                <button class="btn" id="nextStop"><i class="icon-forward"></i></button>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="btn-group">
+                <button type="button" class="btn" id="editStops">Edit stops</button>
+                <button type="button" class="btn" id="drawStops">Draw stops</button>
+                <button type="button" class="btn" id="removeStop">Remove stop</button>
+<!--
+                <button type="button" class="btn" id="editStops"><i class="icon-pencil"></i></button>
+                <button type="button" class="btn" id="drawStops"><i class="icon-plus"></i></button>
+                <button type="button" class="btn" id="removeStop"><i class="icon-remove"></i></button>
+-->
+              </div>
+            </div>
+            <div class="span12 form-inline" id="stopInfoHandlebars"></div>
+              <script id="stopInfoTmp" type="text/x-handlebars">
+                <table class="table table-hover table-condensed">
+                  <tbody>
+                    <tr data-id="stop_id">    
+                        <td>Id</td>
+                        <td>{{attributes.stop_id}}</td>
+                    </tr>
+                    <tr data-id="stop_seq">    
+                      <td>Ordinal</td>
+                      <td>
+                        <input class="input-block-level" id="stop_seq" 
+                          type="text" value="{{attributes.stop_seq}}">
+                      </td>
+                    </tr>
+                    <tr data-id="stop_calle">    
+                      <td>Calle</td>
+                      <td>
+                        <input class="input-block-level" id="stop_calle" 
+                          type="text" value="{{attributes.stop_calle}}">
+                      </td>
+                    </tr>
+                    <tr data-id="stop_numero">    
+                      <td>Número</td>
+                      <td>
+                        <input class="input-block-level" id="stop_numero" 
+                          type="text" value="{{attributes.stop_numero}}">
+                      </td>
+                    </tr>
+                    <tr data-id="stop_entre">    
+                      <td>Entre</td>
+                      <td>
+                        <input class="input-block-level" id="stop_entre" 
+                          type="text" value="{{attributes.stop_entre}}">
+                      </td>
+                    </tr>
+                    <tr data-id="stop_esquina">    
+                      <td>Esquina</td>
+                      <td>
+                        <input class="input-block-level" id="stop_esquina" 
+                          type="text" value="{{attributes.stop_esquina}}">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </script>
+            </div>
+<!--
+          <div class="span8" id="stopsTable"></div><br/>
+            <script id="stopsTemplate" type="text/x-handlebars">
+                <table class="table table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Latitud</th>
+                      <th>Longitud</th>
+                    </tr>
+                  </head>
+                  <tbody>
+                    {{#each stops}}
+                        <tr data-id={{stop_id}}>    
+                            <td>{{stop_id}}</td>
+                            <td>{{stop_lat}}</td>
+                            <td>{{stop_lon}}</td>
+                        </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+            </script>
+          </div>
+-->
+      </div>
+
+      <div class="span9">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#mapTab" data-toggle="tab">Map</a></li>
+          <li><a href="#schedule" data-toggle="tab">Schedule</a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane active" id="mapTab">
+            <div id="map" class="smallmap"></div>
+          </div>
+
+          <div class="tab-pane" id="schedule">
+            <div class="tabbable tabs-left">
+              <ul class="nav nav-tabs">
+                <li class="active"><a href="#lav" data-toggle="tab">Lunes a Viernes</a></li>
+                <li><a href="#sabado" data-toggle="tab">Sábados</a></li>
+                <li><a href="#domingo" data-toggle="tab">Domingos y Feriados</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="lav"></div>
+                <div class="tab-pane" id="sabado"></div>
+                <div class="tab-pane" id="domingo"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+  <script src="assets/js/jquery.js"></script>
+  <script src="assets/js/handlebars.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/OpenLayers/OpenLayers.js"></script>
+<!--
+  <script src="http://maps.google.com/maps/api/js?v=3.6&sensor=false"></script>
+-->
+  <script src="js/transit.js"></script>
+  <script src="js/transit.maps.js"></script>
+  <script src="js/transit.dataInterface.js"></script>
+  <script src="js/transit.controls.js"></script>
+<!--
+  <script src="js/transit.geolocation.js"></script>
+-->
+  <script>
+    $(document).ready(function() {
+      
+      transit.core.init();
+      
+    });
+  </script>
+</body>
+</html>
